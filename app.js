@@ -1,9 +1,11 @@
+// const { event } = require("jquery");
+
 // Commission Calculator
 const propertyAddress = document.getElementsByName('property-address'); 
 const price= document.getElementById("purchase-price");
 const commRate = document.getElementById("commission-rate");
 // Commission Button
-const commBtn = document.getElementById("commission-btn"); //Commission Button
+const commBtn = document.getElementById("commission-btn");
 // Commission Results 
 const commResults_address = document.getElementById("commission-address--hidden");
 const commResults = document.getElementById("commission-results--hidden");
@@ -19,11 +21,7 @@ const monthlyPayment = document.getElementById('loan-monthly-payment');
 const loanTotal = document.getElementById('loan-total');
 const loanInterest = document.getElementById('loan-total-interest');
 
-
-
-
 //Commission Calculator click event with callback function
-
 const calculateComm = () => {
     let pending, percent, value, displayAmount;
     percent = commRate.value;
@@ -33,33 +31,36 @@ const calculateComm = () => {
 
     commResults.innerHTML = '$' + displayAmount.toLocaleString(undefined, { maximumFractionDigits: 2 });
     // commResults_address.innerHTML = propertyAddress.value;
-}
+};
 // click event for commission calculator
 commBtn.addEventListener('click', calculateComm, false);
 
-// need to differentiate between when enter is 
-//clicked in comm Container vs loan container 
 
-// document.addEventListener('keypress', (event) => {
-//     if (event.keyCode === 13 && commResults.DOCUMENT_NODE === 9) {
-//         calculateComm();
-//     } else if (event.keyCode && loanRepayment.DOCUMENT_POSITION_CONTAINS === 8) {
-//         calculateLoan();
-//     }
-// }, false);
-    loanBtn.addEventListener('click', calculateLoan = () => {
-    let principal, interest, payments, compute, monthly;
-    
+// Loan Calculator
+const calculateLoan = () => {
+    let principal, interest, payments, compute, monthly;   
     principal = parseFloat(loanAmount.value);    
     interest = parseFloat(apr.value) / 100 / 12;
-    payments = parseFloat(loanRepayment.value) * 12;
-    
+    payments = parseFloat(loanRepayment.value) * 12; 
     compute = Math.pow(1 + interest, payments);    
     monthly = (principal *compute* interest) / (compute - 1);
-    monthlyPayment.innerHTML = monthly.toLocaleString(undefined, { maximumFractionDigits: 2 });
-  
-    
-    loanTotal.innerHTML = (monthly * payments) .toLocaleString(undefined, { maximumFractionDigits: 2 });
-    
-    loanInterest.innerHTML = ((monthly * payments) - principal).toLocaleString(undefined, { maximumFractionDigits: 2 }); 
-}, false);
+
+    monthlyPayment.innerHTML = monthly.toLocaleString(undefined, { maximumFractionDigits: 2 });    
+    loanTotal.innerHTML = (monthly * payments).toLocaleString(undefined, { maximumFractionDigits: 2 });  
+    loanInterest.innerHTML = ((monthly * payments) - principal).toLocaleString(undefined, { maximumFractionDigits: 2 });   
+console.log(loanTotal);
+console.log(monthlyPayment);
+console.log(loanInterest);
+};
+
+loanBtn.addEventListener('click', calculateLoan, false);
+
+// Keyboard events
+window.addEventListener(
+    "keydown",
+    (event) => { 
+        if  (event.code !== "Enter") {
+            calculateLoan
+            calculateComm
+        }
+    },true,)
